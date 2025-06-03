@@ -1,0 +1,26 @@
+name: Run ORB Breakout Bot
+
+on:
+  schedule:
+    - cron: '*/5 3-9 * * 1-5'  # 08:00–14:59 UTC = 13:30–19:29 IST weekdays
+  workflow_dispatch:
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    env:
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      API_KEY: ${{ secrets.API_KEY }}
+      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - run: pip install -r requirements.txt
+
+      - run: python orb_bot.py
